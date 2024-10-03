@@ -80,8 +80,8 @@ const renderEmails = (emails, $node, mailbox) => {
     const $div = document.createElement('div')
     $div.className = 'email'
     const emailAddress = isInbox ? email.sender : `To: ${email.recipients[0]}`
-    $div.innerHTML = `<div><span>${emailAddress}</span><span>${email.subject}</span>
-    </div><span>${email.timestamp}</span>`
+    $div.innerHTML = `<div><span class="font-weight-bold">${emailAddress}</span><span>${email.subject}</span>
+    </div><span class="text-secondary">${email.timestamp}</span>`
     $div.onclick = () => handleEmailClick(email)
     $emailsFeed.append($div)
   })
@@ -92,10 +92,10 @@ const renderEmailDetail = (email, $node) => {
   $node.style.display = 'block'
   $node.innerHTML = `
     <div class="email-detail">
-      <div><span>From: </span>${email.sender}</div>
-      <div><span>To: </span>${email.recipients.join(' ')}</div>
-      <div><span>Subject: ${email.subject}</span></div>
-      <div><span>Timestamp: </span>${email.timestamp}</div>
+      <div><span class="font-weight-bold">From: </span>${email.sender}</div>
+      <div><span class="font-weight-bold">To: </span>${email.recipients.join(' ')}</div>
+      <div><span class="font-weight-bold">Subject: ${email.subject}</span></div>
+      <div><span class="font-weight-bold">Timestamp: </span>${email.timestamp}</div>
     </div>
     <button class="btn btn-sm btn-outline-primary mt-2" id="reply">Reply</button>
     <hr>
