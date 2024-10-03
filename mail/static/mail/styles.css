@@ -22,7 +22,11 @@ ul {
     z-index: 2;
 }
 
-.email > div > span:first-child{
+.email > div > span:first-child {
     display: inline-block;
     width: 200px;
+}
+
+.email-detail span {
+    font-weight: bold;
 }

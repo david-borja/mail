@@ -90,9 +90,18 @@ const renderEmails = (emails, $node, mailbox) => {
 const renderEmailDetail = (email, $node) => {
   $emailsView.style.display = 'none'
   $node.style.display = 'block'
-  $node.innerHTML = JSON.stringify(email)
-}
-
+  $node.innerHTML = `
+    <div class="email-detail">
+      <div><span>From: </span>${email.sender}</div>
+      <div><span>To: </span>${email.recipients.join(' ')}</div>
+      <div><span>Subject: ${email.subject}</span></div>
+      <div><span>Timestamp: </span>${email.timestamp}</div>
+    </div>
+    <button class="btn btn-sm btn-outline-primary mt-2" id="reply">Reply</button>
+    <hr>
+    <article>${email.body}</article>
+  `
+  }
 // MAIN FUNCTIONS //
 
 function compose_email() {
