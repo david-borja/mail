@@ -2,13 +2,24 @@
 
 let $emailsView
 let $composeView
-let $emailDetail
+let $emailDetailView
 let $composeRecipients
 let $composeSubject
 let $composeBody
 
+const EMAILS_VIEW_ID = 'emails-view'
+const COMPOSE_VIEW_ID = 'compose-view'
+const EMAIL_DETAIL_VIEW_ID = 'email-detail-view'
+
+// UTILS
+
 const $ = (element) => document.querySelector(element)
-// TO DO: create a utility to set visibility
+
+const setVisibleView = (viewIdToDisplay) => {
+  [$emailsView, $composeView, $emailDetailView].forEach(element => {
+    element.style.display = element.id === viewIdToDisplay ? 'block' : 'none'
+  })
+}
 
 document.addEventListener('DOMContentLoaded', function () {
   // Use buttons to toggle between views
@@ -17,9 +28,10 @@ document.addEventListener('DOMContentLoaded', function () {
   $('#archived').addEventListener('click', () => load_mailbox('archive'))
   $('#compose').addEventListener('click', compose_email)
 
-  $emailsView = $('#emails-view')
-  $composeView = $('#compose-view')
-  $emailDetail = $('#email-detail')
+  $emailsView = $(`#${EMAILS_VIEW_ID}`)
+  $composeView = $(`#${COMPOSE_VIEW_ID}`)
+  $emailDetailView = $(`#${EMAIL_DETAIL_VIEW_ID}`)
+
   $composeRecipients = $('#compose-recipients')
   $composeSubject = $('#compose-subject')
   $composeBody = $('#compose-body')
@@ -65,7 +77,19 @@ const handleSubmit = () => {
 }
 
 const handleEmailClick = (email, mailbox) => {
-  renderEmailDetail(email, $emailDetail, mailbox)
+  renderEmailDetail(email, $emailDetailView, mailbox)
+}
+
+const handleReplyClick = (email) => {
+  console.log(email)
+  setVisibleView(COMPOSE_VIEW_ID)
+  $composeRecipients.value = email.sender
+  $composeSubject.value = email.subject.startsWith('Re: ') ? email.subject : `Re: ${email.subject}`
+  $composeBody.value = `On ${email.timestamp} ${email.sender} wrote:
+    ${email.body}
+  `
+  $composeBody.focus()
+
 }
 
 // RENDERERS
@@ -101,14 +125,13 @@ const renderEmailDetail = (email, $node) => {
     <hr>
     <article>${email.body}</article>
   `
+  $('#reply').onclick = () => handleReplyClick(email)
   }
 // MAIN FUNCTIONS //
 
 function compose_email() {
   // Show compose view and hide other views
-  $emailsView.style.display = 'none'
-  $emailDetail.style.display = 'none'
-  $composeView.style.display = 'block'
+  setVisibleView(COMPOSE_VIEW_ID)
 
   // Clear out composition fields
   $composeRecipients.value = ''
@@ -120,9 +143,7 @@ function compose_email() {
 
 function load_mailbox(mailbox) {
   // Show the mailbox and hide other views
-  $emailsView.style.display = 'block'
-  $composeView.style.display = 'none'
-  $emailDetail.style.display = 'none'
+  setVisibleView(EMAILS_VIEW_ID)
 
   // Show the mailbox name
   $emailsView.innerHTML = `<h3>${
