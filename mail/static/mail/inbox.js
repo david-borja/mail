@@ -63,6 +63,15 @@ const postEmail = (body) => {
     .then((result) => result)
 }
 
+const putEmail = (body) => {
+  return fetch(`/emails/${body.id}`, {
+    method: 'PUT',
+    body: JSON.stringify(body)
+  })
+    .then((response) => response.json())
+    .then((result) => result)
+}
+
 // HANDLERS //
 
 const handleSubmit = () => {
@@ -77,6 +86,7 @@ const handleSubmit = () => {
 }
 
 const handleEmailClick = (email, mailbox) => {
+  putEmail({ ...email, read: true })
   renderEmailDetail(email, $emailDetailView, mailbox)
 }
 
@@ -103,6 +113,7 @@ const renderEmails = (emails, $node, mailbox) => {
     // TO DO: change clickable div for a button
     const $div = document.createElement('div')
     $div.className = 'email'
+    $div.style.backgroundColor = email.read ? 'inherit' : '#f2f6fc'
     const emailAddress = isInbox ? email.sender : `To: ${email.recipients[0]}`
     $div.innerHTML = `<div><span class="font-weight-bold">${emailAddress}</span><span>${email.subject}</span>
     </div><span class="text-secondary">${email.timestamp}</span>`
@@ -117,9 +128,13 @@ const renderEmailDetail = (email, $node) => {
   $node.innerHTML = `
     <div class="email-detail">
       <div><span class="font-weight-bold">From: </span>${email.sender}</div>
-      <div><span class="font-weight-bold">To: </span>${email.recipients.join(' ')}</div>
-      <div><span class="font-weight-bold">Subject: ${email.subject}</span></div>
-      <div><span class="font-weight-bold">Timestamp: </span>${email.timestamp}</div>
+      <div><span class="font-weight-bold">To: </span>${email.recipients.join(
+        ' '
+      )}</div>
+      <div><span class="font-weight-bold">Subject: </span>${email.subject}</div>
+      <div><span class="font-weight-bold">Timestamp: </span>${
+        email.timestamp
+      }</div>
     </div>
     <button class="btn btn-sm btn-outline-primary mt-2" id="reply">Reply</button>
     <hr>
