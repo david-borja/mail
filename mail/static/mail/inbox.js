@@ -113,7 +113,8 @@ const renderEmails = (emails, $node, mailbox) => {
     // TO DO: change clickable div for a button
     const $div = document.createElement('div')
     $div.className = 'email'
-    $div.style.backgroundColor = email.read ? 'inherit' : '#f2f6fc'
+    $div.style.backgroundColor = email.read ? '#f2f6fc' : 'inherit'
+    // TO DO: FIX THE SHADOW WHEN IT'S READ
     const emailAddress = isInbox ? email.sender : `To: ${email.recipients[0]}`
     $div.innerHTML = `<div><span class="font-weight-bold">${emailAddress}</span><span>${email.subject}</span>
     </div><span class="text-secondary">${email.timestamp}</span>`
