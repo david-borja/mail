@@ -4,8 +4,6 @@ textarea {
 
 ul {
     padding: unset;
-    border: solid 1px rgba(100,121,143,0.12);
-    border-bottom: none;
 }
 
 .email {
@@ -17,6 +15,7 @@ ul {
 }
 
 .email:hover {
+    position: relative;
     cursor: pointer;
     box-shadow: inset 1px 0 0 #dadce0,inset -1px 0 0 #dadce0,0 1px 2px 0 rgba(60,64,67,.3),0 1px 3px 1px rgba(60,64,67,.15);
     z-index: 2;
