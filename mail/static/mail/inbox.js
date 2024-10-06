@@ -91,7 +91,6 @@ const handleEmailClick = (email, mailbox) => {
 }
 
 const handleReplyClick = (email) => {
-  console.log(email)
   setVisibleView(COMPOSE_VIEW_ID)
   $composeRecipients.value = email.sender
   $composeSubject.value = email.subject.startsWith('Re: ') ? email.subject : `Re: ${email.subject}`
@@ -99,7 +98,16 @@ const handleReplyClick = (email) => {
     ${email.body}
   `
   $composeBody.focus()
+}
 
+const handleArchiveClick = (email) => {
+  putEmail({ ...email, archived: true })
+  load_mailbox('inbox')
+}
+
+const handleUnarchiveClick = (email) => {
+  putEmail({ ...email, archived: false })
+  load_mailbox('inbox')
 }
 
 // RENDERERS
@@ -138,10 +146,19 @@ const renderEmailDetail = (email, $node) => {
       }</div>
     </div>
     <button class="btn btn-sm btn-outline-primary mt-2" id="reply">Reply</button>
+    ${
+      email.archived
+        ? '<button class="btn btn-sm btn-outline-primary mt-2" id="unarchive">Unarchive</button>'
+        : '<button class="btn btn-sm btn-outline-primary mt-2" id="archive">Archive</button>'
+    }
     <hr>
     <article>${email.body}</article>
   `
   $('#reply').onclick = () => handleReplyClick(email)
+
+  email.archived
+    ? ($('#unarchive').onclick = () => handleUnarchiveClick(email))
+    : ($('#archive').onclick = () => handleArchiveClick(email))
   }
 // MAIN FUNCTIONS //
 
