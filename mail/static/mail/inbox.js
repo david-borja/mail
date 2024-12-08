@@ -68,8 +68,7 @@ const putEmail = (body) => {
     method: 'PUT',
     body: JSON.stringify(body)
   })
-    .then((response) => response.json())
-    .then((result) => result)
+    .then((response) => response.ok)
 }
 
 // HANDLERS //
@@ -86,7 +85,9 @@ const handleSubmit = () => {
 }
 
 const handleEmailClick = (email, mailbox) => {
-  putEmail({ ...email, read: true })
+  if (!email.read) {
+    putEmail({ ...email, read: true })
+  }
   renderEmailDetail(email, $emailDetailView, mailbox)
 }
 
