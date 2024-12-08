@@ -96,8 +96,9 @@ const handleReplyClick = (email) => {
   $composeRecipients.value = email.sender
   $composeSubject.value = email.subject.startsWith('Re: ') ? email.subject : `Re: ${email.subject}`
   $composeBody.value = `On ${email.timestamp} ${email.sender} wrote:
-    ${email.body}
-  `
+  ${email.body}
+
+`
   $composeBody.focus()
 }
 
@@ -153,7 +154,7 @@ const renderEmailDetail = (email, $node) => {
         : '<button class="btn btn-sm btn-outline-primary mt-2" id="archive">Archive</button>'
     }
     <hr>
-    <article>${email.body}</article>
+    <article><pre>${email.body}</pre></article>
   `
   $('#reply').onclick = () => handleReplyClick(email)
 
