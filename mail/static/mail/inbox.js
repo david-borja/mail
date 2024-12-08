@@ -92,7 +92,7 @@ const handleEmailClick = (email, mailbox) => {
 }
 
 const handleReplyClick = (email) => {
-  setVisibleView(COMPOSE_VIEW_ID)
+  compose_email()
   $composeRecipients.value = email.sender
   $composeSubject.value = email.subject.startsWith('Re: ') ? email.subject : `Re: ${email.subject}`
   $composeBody.value = `On ${email.timestamp} ${email.sender} wrote:
